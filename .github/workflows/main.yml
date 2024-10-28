@@ -18,8 +18,8 @@ jobs:
           distribution: 'corretto'
           java-version: '17'
 
-      - name: Build and test with Maven
-        run: mvn clean verify --file ./simple-api/pom.xml
+      - name: Build, test, and SonarCloud analysis
+        run: mvn -B verify sonar:sonar -Dsonar.projectKey=ThomasBeurdouche_devops-livecoding -Dsonar.organization=thomasbeurdouche -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=${{ secrets.SONAR_TOKEN }} --file ./simple-api/pom.xml
 
   cd:
     runs-on: ubuntu-22.04
