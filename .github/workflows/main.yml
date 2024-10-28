@@ -19,10 +19,11 @@ jobs:
           java-version: '17'
 
       - name: Build, test, and SonarCloud analysis
-        run: mvn -B verify sonar:sonar -Dsonar.projectKey=ThomasBeurdouche_devops-livecoding -Dsonar.organization=thomasbeurdouche -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=${{ secrets.SONAR_TOKEN }} --file ./simple-api/pom.xml
+        run: mvn -B verify sonar:sonar -Dsonar.projectKey=ThomasBeurdouche_devops-livecoding -Dsonar.organization=thomasbeurdouche -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=${{ secrets.SONAR_TOKEN }}  --file ./simple-api/pom.xml
 
   cd:
     runs-on: ubuntu-22.04
+    if: github.ref == 'refs/heads/main'
     needs: test-backend
     steps:
       - name: Checkout code
@@ -45,7 +46,7 @@ jobs:
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/tp-devops-database:latest
           push: true
 
-      - name: Build and push httpd image
+      - name: Build and push http image
         uses: docker/build-push-action@v3
         with:
           context: ./http-server
